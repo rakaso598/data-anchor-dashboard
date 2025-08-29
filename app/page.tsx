@@ -14,6 +14,7 @@ import {
   CircularProgress,
   Alert,
 } from "@mui/material";
+import Link from "next/link";
 
 interface RecordItem {
   key: string;
@@ -49,7 +50,9 @@ export default function HomePage() {
             <TableBody>
               {data.map((row) => (
                 <TableRow key={row.key}>
-                  <TableCell>{row.key}</TableCell>
+                  <TableCell>
+                    <Link href={`/records/${row.key}`}>{row.key}</Link>
+                  </TableCell>
                   <TableCell>{row.version}</TableCell>
                   <TableCell>{row.status}</TableCell>
                   <TableCell>
