@@ -1,0 +1,94 @@
+"use client";
+
+import * as React from 'react';
+import { useParams } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import useSWR from 'swr';
+import useSWRMutation from 'swr/mutation';
+import { fetcher } from '@lib/fetcher';
+import DashboardLayout from '@components/DashboardLayout';
+import { useSnackbar } from '@components/SnackbarProvider';
+import { TextField, Button, Paper, Typography, Box, CircularProgress } from '@mui/material';
+
+const schema = z.object({
+  data: z.string().min(1, 'Data is required'), // JSON string
+});
+
+type FormValues = z.infer<typeof schema>;
+
+async function updateRecord(url: string, { arg }: { arg: FormValues }) {
+  const res = await fetcher(url, {
+    method: 'PUT',
+    body: JSON.stringify({ data: JSON.parse(arg.data) }),
+  });
+  return res;
+}
+
+interface RecordItem {
+  key: string;
+  version: number;
+  data: unknown;
+  status: string;
+  prevHash: string;
+  hash: string;
+  createdAt: string;
+}
+
+export default function UpdateRecordPage() {
+  const params = useParams();
+  const key = Array.isArray(params?.key) ? params.key[0] : params?.key;
+  const { data: record, isLoading } = useSWR<RecordItem>(key ? `/records/${key}` : null, fetcher);
+  const { register, handleSubmit, formState: { errors }, reset } = useForm<FormValues>({
+    resolver: zodResolver(schema),
+    defaultValues: { data: record ? JSON.stringify(record.data, null, 2) : '' },
+  });
+  const { trigger, isMutating } = useSWRMutation(key ? `/records/${key}` : '', updateRecord);
+  const { showMessage } = useSnackbar();
+
+  React.useEffect(() => {
+    if (record) {
+      reset({ data: JSON.stringify(record.data, null, 2) });
+    }
+  }, [record, reset]);
+
+  const onSubmit = async (values: FormValues) => {
+    try {
+      await trigger(values);
+      showMessage('레코드가 성공적으로 수정되었습니다.', 'success');
+    } catch (e) {
+      const err = e as Error;
+      showMessage(err?.message || '수정 중 오류가 발생했습니다.', 'error');
+    }
+  };
+
+  return (
+    <DashboardLayout>
+      <Typography variant="h5" gutterBottom>레코드 수정: {key}</Typography>
+      <Paper sx={{ p: 2, maxWidth: 480 }}>
+        {isLoading && <CircularProgress />}
+        {record && (
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <TextField
+              label="Data (JSON)"
+              fullWidth
+              margin="normal"
+              multiline
+              minRows={3}
+              {...register('data')}
+              error={!!errors.data}
+              helperText={errors.data?.message}
+            />
+            <Box mt={2} display="flex" gap={2}>
+              <Button type="submit" variant="contained" disabled={isMutating}>
+                수정
+              </Button>
+              {isMutating && <CircularProgress size={24} />}
+            </Box>
+          </form>
+        )}
+      </Paper>
+    </DashboardLayout>
+  );
+}

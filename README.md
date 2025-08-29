@@ -1,36 +1,103 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Data Anchor Dashboard - ✨[바로가기](https://data-anchor-dashboard.vercel.app)
 
-## Getting Started
+<details>
+  <summary><h2>🖼️ 대시보드 미리보기 이미지</h2></summary>
+  
+  ### 레코드 목록
+  <img width="600" alt="레코드목록" src="docs/레코드목록.png" />
 
-First, run the development server:
+  ### 레코드 상세
+  <img width="600" alt="레코드상세" src="docs/레코드상세.png" />
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+  ### 레코드 이력
+  <img width="600" alt="레코드이력" src="docs/레코드이력.png" />
+
+  ### 레코드 수정
+  <img width="600" alt="레코드수정" src="docs/레코드수정.png" />
+
+  ### 레코드 삭제
+  <img width="600" alt="레코드삭제" src="docs/레코드삭제.png" />
+
+  ### 레코드 수정 및 삭제 시 이력
+  <img width="600" alt="레코드수정삭제시이력" src="docs/레코드수정삭제시이력.png" />
+
+  ### 레코드 모달
+  <img width="600" alt="레코드모달" src="docs/레코드모달.png" />
+
+</details>
+
+## 프로젝트 개요
+
+**Data Anchor Dashboard**는 신뢰성 있는 데이터 관리와 투명한 변경 이력을 보장하기 위해 설계된, NestJS 기반 API와 연동되는 Next.js 대시보드입니다. 이 서비스는 "추가만 가능한(append-only) Key/Value 레코드"를 안전하게 관리하고, 모든 변경 내역을 추적하며, 논리적 삭제와 버전 관리를 지원합니다.
+
+## 개발 동기 및 목표
+
+- **신뢰성**: 데이터의 위변조 방지와 변경 이력의 투명한 관리가 필요한 환경(예: 로그, 증빙, 데이터 증거 등)에서 활용할 수 있는 관리 도구가 필요했습니다.
+- **확장성/유지보수성**: 프론트엔드와 백엔드가 명확히 분리되고, 타입 안정성과 모듈화가 뛰어난 구조를 지향했습니다.
+- **사용자 경험**: 인증, CRUD, 이력 조회 등 실무에서 바로 쓸 수 있는 직관적이고 반응형인 UI/UX를 목표로 했습니다.
+
+## 주요 서비스/기능
+
+- **Key/Value 레코드 관리**: 레코드 생성, 조회, 수정, 논리적 삭제, 전체 이력(버전) 확인
+- **API Key 인증**: .env가 아닌 웹 UI(자물쇠 버튼)에서 직접 입력/해제, localStorage/Context로 안전하게 관리, fetcher에서 자동 적용
+- **변경 이력/버전 관리**: 모든 변경 사항은 이력으로 남아 추적 가능, 논리적 삭제 지원
+- **반응형 대시보드**: 다양한 기기에서 최적화된 UI 제공
+- **스낵바 알림/에러 UX**: 전역 알림 및 에러 처리로 사용자 경험 강화
+
+## 기술 스택 및 설계
+
+- **Next.js(App Router)**: 최신 Next.js 구조, SSR/CSR 안전성 확보, 내장 기능 최대한 활용
+- **NestJS API**: 레코드 관리 및 인증을 담당하는 백엔드(별도 프로젝트)
+- **SWR**: 데이터 패칭/캐싱, 실시간 UX, fetcher에 API Key 자동 포함
+- **MUI(Material UI)**: 일관된 디자인 시스템, 반응형 레이아웃, 커스텀 테마
+- **Zod + React Hook Form**: 타입 안전한 폼 검증 및 관리
+- **pnpm**: 빠르고 일관된 패키지 관리
+- **Context + localStorage**: API Key 등 민감 정보의 안전한 클라이언트 상태 관리
+
+## 구현 방식 및 로직
+
+- **폴더 구조**: `components/`, `lib/`, `hooks/`, `types/`, `utils/` 등으로 명확히 분리, 확장성 고려
+- **API Key 관리**: 자물쇠 버튼 클릭 → 입력/해제 → Context+localStorage에 저장, fetcher에서 자동 헤더 적용, storage 이벤트로 다중 탭 동기화
+- **CRUD/이력**: SWR 기반 데이터 패칭, MUI 테이블/폼, Zod+React Hook Form으로 검증, key 중복/누락 안전 처리
+- **전역 스낵바**: Context로 전역 알림/에러 UX 제공
+- **문서화**: docs/에 구조, 기술 선택, 가이드 등 상세 문서화
+
+## 사고 구조 및 개발 철학
+
+- **Best Practice 지향**: Next.js, MUI, SWR, Zod 등 각 기술의 권장 방식과 최신 패턴을 적극 반영
+- **타입 안전성/모듈화**: any 사용 최소화, 명확한 타입/분리, 유지보수 용이성 중시
+- **확장/테스트 용이성**: 기능 추가/변경이 쉽고, 테스트/문서화가 자연스럽게 이어지는 구조
+- **실제 서비스에 바로 적용 가능한 실용성**: 인증, 이력, UX 등 실무에서 바로 쓸 수 있는 기능 위주로 설계
+
+## 시작하기
+
+### 환경 변수(.env) 설정
+
+- 반드시 아래 두 가지 환경 변수를 .env 파일에 설정해야 합니다:
+  - `NEXT_PUBLIC_API_URL` : 백엔드 NestJS API의 엔드포인트 URL
+  - `NEXT_PUBLIC_API_KEY` : (선택) 기본 API Key (실제 인증은 웹 UI에서 입력/해제)
+
+예시:
+```env
+NEXT_PUBLIC_API_URL=https://your-nest-api-url.com
+NEXT_PUBLIC_API_KEY=your-default-api-key
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+1. 의존성 설치
+   ```bash
+   pnpm install
+   ```
+2. 개발 서버 실행
+   ```bash
+   pnpm dev
+   ```
+3. 브라우저에서 [http://localhost:3000](http://localhost:3000) 접속
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+> 백엔드(NestJS API)는 별도 프로젝트로, API URL은 환경변수(.env), API Key는 웹 UI에서 직접 입력/해제합니다.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 문서
+- `/docs/` 폴더에 구조, 기술 비교, 가이드 등 상세 문서가 포함되어 있습니다.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+문의/기여/피드백 환영합니다!
