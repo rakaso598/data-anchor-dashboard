@@ -1,6 +1,9 @@
 export const fetcher = async (url: string, options: RequestInit = {}) => {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
-  const apiKey = process.env.NEXT_PUBLIC_API_KEY;
+  let apiKey: string | null = null;
+  if (typeof window !== 'undefined') {
+    apiKey = window.localStorage.getItem('apiKey');
+  }
   const res = await fetch(apiUrl + url, {
     ...options,
     headers: {
