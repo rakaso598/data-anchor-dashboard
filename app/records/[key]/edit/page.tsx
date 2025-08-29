@@ -7,7 +7,8 @@ import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
 import { fetcher } from '../../../lib/fetcher';
 import DashboardLayout from '../../../components/DashboardLayout';
-import { TextField, Button, Paper, Typography, Box, Alert, CircularProgress } from '@mui/material';
+import { TextField, Button, Paper, Typography, Box, CircularProgress } from '@mui/material';
+import { useSnackbar } from '../../../components/SnackbarProvider';
 
 const schema = z.object({
   data: z.string().min(1, 'Data is required'), // JSON string
@@ -32,7 +33,8 @@ export default function UpdateRecordPage() {
     resolver: zodResolver(schema),
     defaultValues: { data: record ? JSON.stringify(record.data, null, 2) : '' },
   });
-  const { trigger, isMutating, error, data } = useSWRMutation(key ? `/records/${key}` : '', updateRecord);
+  const { trigger, isMutating } = useSWRMutation(key ? `/records/${key}` : '', updateRecord);
+  const { showMessage } = useSnackbar();
 
   React.useEffect(() => {
     if (record) {
@@ -41,7 +43,12 @@ export default function UpdateRecordPage() {
   }, [record, reset]);
 
   const onSubmit = async (values: FormValues) => {
-    await trigger(values);
+    try {
+      await trigger(values);
+      showMessage('레코드가 성공적으로 수정되었습니다.', 'success');
+    } catch (e: any) {
+      showMessage(e?.message || '수정 중 오류가 발생했습니다.', 'error');
+    }
   };
 
   return (
@@ -69,8 +76,6 @@ export default function UpdateRecordPage() {
             </Box>
           </form>
         )}
-        {error && <Alert severity="error" sx={{ mt: 2 }}>{error.message}</Alert>}
-        {data && <Alert severity="success" sx={{ mt: 2 }}>수정 완료!</Alert>}
       </Paper>
     </DashboardLayout>
   );

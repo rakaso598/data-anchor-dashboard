@@ -4,6 +4,7 @@ import useSWRMutation from 'swr/mutation';
 import { fetcher } from '../../../lib/fetcher';
 import DashboardLayout from '../../../components/DashboardLayout';
 import { Button, Paper, Typography, Box, Alert, CircularProgress, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
+import { useSnackbar } from '../../../components/SnackbarProvider';
 
 async function deleteRecord(url: string) {
   const res = await fetcher(url, { method: 'DELETE' });
@@ -16,10 +17,16 @@ export default function DeleteRecordPage() {
   const key = Array.isArray(params?.key) ? params.key[0] : params?.key;
   const { trigger, isMutating, error, data } = useSWRMutation(key ? `/records/${key}` : '', deleteRecord);
   const [open, setOpen] = React.useState(true);
+  const { showMessage } = useSnackbar();
 
   const handleDelete = async () => {
-    await trigger();
-    setTimeout(() => router.push('/'), 1200);
+    try {
+      await trigger();
+      showMessage('레코드가 성공적으로 삭제되었습니다.', 'success');
+      setTimeout(() => router.push('/'), 1200);
+    } catch (e: any) {
+      showMessage(e?.message || '삭제 중 오류가 발생했습니다.', 'error');
+    }
   };
 
   return (
@@ -30,8 +37,7 @@ export default function DeleteRecordPage() {
           <DialogContentText>
             정말로 <b>{key}</b> 레코드를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.
           </DialogContentText>
-          {error && <Alert severity="error" sx={{ mt: 2 }}>{error.message}</Alert>}
-          {data && <Alert severity="success" sx={{ mt: 2 }}>삭제 완료! 잠시 후 목록으로 이동합니다.</Alert>}
+          {/* 기존 Alert 제거, 스낵바로 대체 */}
         </DialogContent>
         <DialogActions>
           <Button onClick={() => router.back()} disabled={isMutating}>취소</Button>
