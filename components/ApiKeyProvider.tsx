@@ -12,17 +12,15 @@ export function useApiKey() {
 }
 
 export function ApiKeyProvider({ children }: { children: React.ReactNode }) {
+  // SSR-safe: 초기값은 항상 null
   const [apiKey, setApiKeyState] = useState<string | null>(null);
 
-  // localStorage → state 동기화 (초기화 및 storage 이벤트 대응)
+  // 클라이언트에서만 localStorage 동기화
   useEffect(() => {
-    const sync = () => {
-      const stored = typeof window !== 'undefined' ? localStorage.getItem('apiKey') : null;
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('apiKey');
       setApiKeyState(stored);
-    };
-    sync();
-    window.addEventListener('storage', sync);
-    return () => window.removeEventListener('storage', sync);
+    }
   }, []);
 
   const setApiKey = (key: string | null) => {
@@ -32,6 +30,17 @@ export function ApiKeyProvider({ children }: { children: React.ReactNode }) {
       else localStorage.removeItem('apiKey');
     }
   };
+
+  // storage 이벤트로 여러 탭 동기화
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const sync = () => {
+      const stored = localStorage.getItem('apiKey');
+      setApiKeyState(stored);
+    };
+    window.addEventListener('storage', sync);
+    return () => window.removeEventListener('storage', sync);
+  }, []);
 
   return (
     <ApiKeyContext.Provider value={{ apiKey, setApiKey }}>
