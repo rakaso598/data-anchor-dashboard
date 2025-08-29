@@ -43,6 +43,9 @@ export default function RecordDetailPage() {
       <Button variant="contained" sx={{ ml: 2 }} onClick={() => router.push(`/records/${key}/edit`)}>
         수정
       </Button>
+      <Button variant="outlined" color="error" sx={{ ml: 2 }} onClick={() => router.push(`/records/${key}/delete`)}>
+        삭제
+      </Button>
     </DashboardLayout>
   );
 }
