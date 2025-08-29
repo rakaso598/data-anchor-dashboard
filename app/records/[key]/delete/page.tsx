@@ -17,8 +17,7 @@ export default function DeleteRecordPage() {
   const params = useParams();
   const router = useRouter();
   const key = Array.isArray(params?.key) ? params.key[0] : params?.key;
-  const { trigger, isMutating, error, data } = useSWRMutation(key ? `/records/${key}` : '', deleteRecord);
-  const [open, setOpen] = React.useState(true);
+  const { trigger, isMutating } = useSWRMutation(key ? `/records/${key}` : '', deleteRecord);
   const { showMessage } = useSnackbar();
 
   const handleDelete = async () => {
@@ -34,7 +33,7 @@ export default function DeleteRecordPage() {
 
   return (
     <DashboardLayout>
-      <Dialog open={open} onClose={() => router.back()}>
+      <Dialog open={true} onClose={() => router.back()}>
         <DialogTitle>레코드 삭제</DialogTitle>
         <DialogContent>
           <DialogContentText>
