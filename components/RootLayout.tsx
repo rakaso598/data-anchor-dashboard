@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
+import { SnackbarProvider } from './SnackbarProvider';
 
 const theme = createTheme({
   palette: {
@@ -13,7 +14,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      {children}
+      <SnackbarProvider>
+        {children}
+      </SnackbarProvider>
     </ThemeProvider>
   );
 }
