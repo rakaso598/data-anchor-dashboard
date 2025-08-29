@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -26,11 +26,20 @@ async function updateRecord(url: string, { arg }: { arg: FormValues }) {
   return res;
 }
 
+interface RecordItem {
+  key: string;
+  version: number;
+  data: unknown;
+  status: string;
+  prevHash: string;
+  hash: string;
+  createdAt: string;
+}
+
 export default function UpdateRecordPage() {
   const params = useParams();
-  const router = useRouter();
   const key = Array.isArray(params?.key) ? params.key[0] : params?.key;
-  const { data: record, isLoading } = useSWR<any>(key ? `/records/${key}` : null, fetcher);
+  const { data: record, isLoading } = useSWR<RecordItem>(key ? `/records/${key}` : null, fetcher);
   const { register, handleSubmit, formState: { errors }, reset } = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: { data: record ? JSON.stringify(record.data, null, 2) : '' },
@@ -48,8 +57,9 @@ export default function UpdateRecordPage() {
     try {
       await trigger(values);
       showMessage('레코드가 성공적으로 수정되었습니다.', 'success');
-    } catch (e: any) {
-      showMessage(e?.message || '수정 중 오류가 발생했습니다.', 'error');
+    } catch (e) {
+      const err = e as Error;
+      showMessage(err?.message || '수정 중 오류가 발생했습니다.', 'error');
     }
   };
 

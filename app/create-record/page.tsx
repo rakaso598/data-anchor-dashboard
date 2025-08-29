@@ -37,8 +37,9 @@ export default function CreateRecordPage() {
       await trigger(values);
       showMessage('레코드가 성공적으로 생성되었습니다.', 'success');
       reset();
-    } catch (e: any) {
-      showMessage(e?.message || '생성 중 오류가 발생했습니다.', 'error');
+    } catch (e) {
+      const err = e as Error;
+      showMessage(err?.message || '생성 중 오류가 발생했습니다.', 'error');
     }
   };
 

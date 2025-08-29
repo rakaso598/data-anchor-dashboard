@@ -5,7 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import useSWRMutation from 'swr/mutation';
 import { fetcher } from '@lib/fetcher';
 import DashboardLayout from '@components/DashboardLayout';
-import { Button, Paper, Typography, Box, Alert, CircularProgress, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
+import { Button, CircularProgress, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
 import { useSnackbar } from '@components/SnackbarProvider';
 
 async function deleteRecord(url: string) {
@@ -26,8 +26,9 @@ export default function DeleteRecordPage() {
       await trigger();
       showMessage('레코드가 성공적으로 삭제되었습니다.', 'success');
       setTimeout(() => router.push('/'), 1200);
-    } catch (e: any) {
-      showMessage(e?.message || '삭제 중 오류가 발생했습니다.', 'error');
+    } catch (e) {
+      const err = e as Error;
+      showMessage(err?.message || '삭제 중 오류가 발생했습니다.', 'error');
     }
   };
 
