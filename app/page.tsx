@@ -44,7 +44,7 @@ export default function HomePage() {
         <Typography variant="h4" gutterBottom>
           레코드 목록
         </Typography>
-        <Link href="/create-record" passHref legacyBehavior>
+        <Link href="/create-record">
           <Button variant="contained" color="primary">
             레코드 생성
           </Button>
