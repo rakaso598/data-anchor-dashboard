@@ -1,5 +1,31 @@
 # Data Anchor Dashboard
 
+<details>
+  <summary><h2>🖼️ 대시보드 미리보기 이미지</h2></summary>
+  
+  ### 레코드 목록
+  <img width="600" alt="레코드목록" src="docs/레코드목록.png" />
+
+  ### 레코드 상세
+  <img width="600" alt="레코드상세" src="docs/레코드상세.png" />
+
+  ### 레코드 이력
+  <img width="600" alt="레코드이력" src="docs/레코드이력.png" />
+
+  ### 레코드 수정
+  <img width="600" alt="레코드수정" src="docs/레코드수정.png" />
+
+  ### 레코드 삭제
+  <img width="600" alt="레코드삭제" src="docs/레코드삭제.png" />
+
+  ### 레코드 수정 및 삭제 시 이력
+  <img width="600" alt="레코드수정삭제시이력" src="docs/레코드수정삭제시이력.png" />
+
+  ### 레코드 모달
+  <img width="600" alt="레코드모달" src="docs/레코드모달.png" />
+
+</details>
+
 ## 프로젝트 개요
 
 **Data Anchor Dashboard**는 신뢰성 있는 데이터 관리와 투명한 변경 이력을 보장하기 위해 설계된, NestJS 기반 API와 연동되는 Next.js 대시보드입니다. 이 서비스는 "추가만 가능한(append-only) Key/Value 레코드"를 안전하게 관리하고, 모든 변경 내역을 추적하며, 논리적 삭제와 버전 관리를 지원합니다.
