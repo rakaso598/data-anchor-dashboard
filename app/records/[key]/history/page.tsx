@@ -10,7 +10,7 @@ import { Typography, CircularProgress, Alert, Table, TableBody, TableCell, Table
 interface RecordHistoryItem {
   version: number;
   status: string;
-  data: any;
+  data: unknown;
   prevHash: string;
   hash: string;
   createdAt: string;

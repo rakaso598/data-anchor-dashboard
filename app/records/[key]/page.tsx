@@ -10,7 +10,7 @@ import { Typography, CircularProgress, Alert, Paper, Button, Box } from '@mui/ma
 interface RecordItem {
   key: string;
   version: number;
-  data: any;
+  data: unknown;
   status: string;
   prevHash: string;
   hash: string;

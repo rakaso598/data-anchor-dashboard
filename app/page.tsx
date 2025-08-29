@@ -23,7 +23,7 @@ import Link from "next/link";
 interface RecordItem {
   key: string;
   version: number;
-  data: any;
+  data: unknown;
   status: string;
   prevHash: string;
   hash: string;
