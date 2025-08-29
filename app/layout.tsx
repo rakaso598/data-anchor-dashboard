@@ -1,10 +1,7 @@
-"use client";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
-import { SnackbarProvider } from "../components/SnackbarProvider";
-import { ApiKeyProvider } from "../components/ApiKeyProvider";
+import ClientProviders from "../components/ClientProviders";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,14 +11,6 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
-});
-
-const theme = createTheme({
-  palette: {
-    mode: "light",
-    primary: { main: "#1976d2" },
-    secondary: { main: "#9c27b0" },
-  },
 });
 
 export const metadata: Metadata = {
@@ -36,15 +25,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <ApiKeyProvider>
-            <SnackbarProvider>{children}</SnackbarProvider>
-          </ApiKeyProvider>
-        </ThemeProvider>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <ClientProviders>{children}</ClientProviders>
       </body>
     </html>
   );
