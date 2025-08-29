@@ -5,7 +5,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { fetcher } from '../lib/fetcher';
 import useSWRMutation from 'swr/mutation';
 import DashboardLayout from '../components/DashboardLayout';
-import { TextField, Button, Paper, Typography, Box, Alert, CircularProgress } from '@mui/material';
+import { TextField, Button, Paper, Typography, Box, CircularProgress } from '@mui/material';
+import { useSnackbar } from '../components/SnackbarProvider';
 
 const schema = z.object({
   key: z.string().min(1, 'Key is required'),
@@ -26,11 +27,17 @@ export default function CreateRecordPage() {
   const { register, handleSubmit, formState: { errors }, reset } = useForm<FormValues>({
     resolver: zodResolver(schema),
   });
-  const { trigger, isMutating, error, data } = useSWRMutation('/records', createRecord);
+  const { trigger, isMutating } = useSWRMutation('/records', createRecord);
+  const { showMessage } = useSnackbar();
 
   const onSubmit = async (values: FormValues) => {
-    await trigger(values);
-    reset();
+    try {
+      await trigger(values);
+      showMessage('레코드가 성공적으로 생성되었습니다.', 'success');
+      reset();
+    } catch (e: any) {
+      showMessage(e?.message || '생성 중 오류가 발생했습니다.', 'error');
+    }
   };
 
   return (
@@ -63,8 +70,7 @@ export default function CreateRecordPage() {
             {isMutating && <CircularProgress size={24} />}
           </Box>
         </form>
-        {error && <Alert severity="error" sx={{ mt: 2 }}>{error.message}</Alert>}
-        {data && <Alert severity="success" sx={{ mt: 2 }}>생성 완료!</Alert>}
+        {/* 기존 Alert 제거, 스낵바로 대체 */}
       </Paper>
     </DashboardLayout>
   );
