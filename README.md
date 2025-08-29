@@ -71,6 +71,18 @@
 
 ## 시작하기
 
+### 환경 변수(.env) 설정
+
+- 반드시 아래 두 가지 환경 변수를 .env 파일에 설정해야 합니다:
+  - `NEXT_PUBLIC_API_URL` : 백엔드 NestJS API의 엔드포인트 URL
+  - `NEXT_PUBLIC_API_KEY` : (선택) 기본 API Key (실제 인증은 웹 UI에서 입력/해제)
+
+예시:
+```env
+NEXT_PUBLIC_API_URL=https://your-nest-api-url.com
+NEXT_PUBLIC_API_KEY=your-default-api-key
+```
+
 1. 의존성 설치
    ```bash
    pnpm install
