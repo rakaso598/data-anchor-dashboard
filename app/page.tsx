@@ -13,6 +13,8 @@ import {
   Typography,
   CircularProgress,
   Alert,
+  Button,
+  Box,
 } from "@mui/material";
 import Link from "next/link";
 
@@ -31,9 +33,21 @@ export default function HomePage() {
 
   return (
     <DashboardLayout>
-      <Typography variant="h4" gutterBottom>
-        레코드 목록
-      </Typography>
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        mb={2}
+      >
+        <Typography variant="h4" gutterBottom>
+          레코드 목록
+        </Typography>
+        <Link href="/create-record" passHref legacyBehavior>
+          <Button variant="contained" color="primary">
+            레코드 생성
+          </Button>
+        </Link>
+      </Box>
       {isLoading && <CircularProgress />}
       {error && <Alert severity="error">{error.message}</Alert>}
       {data && (
