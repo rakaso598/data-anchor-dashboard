@@ -41,7 +41,7 @@ export default function RecordHistoryPage() {
             </TableHead>
             <TableBody>
               {data.map((row) => (
-                <TableRow key={row.version}>
+                <TableRow key={row.hash}>
                   <TableCell>{row.version}</TableCell>
                   <TableCell>{row.status}</TableCell>
                   <TableCell>{new Date(row.createdAt).toLocaleString()}</TableCell>
