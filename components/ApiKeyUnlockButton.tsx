@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, InputAdornment, Tooltip } from '@mui/material';
 import LockIcon from '@mui/icons-material/Lock';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
@@ -8,6 +8,7 @@ export default function ApiKeyUnlockButton() {
   const { apiKey, setApiKey } = useApiKey();
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState(apiKey || '');
+  const [pendingSave, setPendingSave] = useState(false);
 
   const handleOpen = () => {
     setInput(apiKey || '');
@@ -16,13 +17,21 @@ export default function ApiKeyUnlockButton() {
   const handleClose = () => setOpen(false);
   const handleSave = () => {
     setApiKey(input.trim() || null);
-    setOpen(false);
+    setPendingSave(true);
   };
   const handleClear = () => {
     setApiKey(null);
     setInput('');
-    setOpen(false);
+    setPendingSave(true);
   };
+
+  // 상태가 반영된 후 다이얼로그 닫기
+  useEffect(() => {
+    if (pendingSave) {
+      setOpen(false);
+      setPendingSave(false);
+    }
+  }, [apiKey, pendingSave]);
 
   return (
     <>
