@@ -40,6 +40,9 @@ export default function RecordDetailPage() {
       <Button variant="outlined" onClick={() => router.push(`/records/${key}/history`)}>
         이력 보기
       </Button>
+      <Button variant="contained" sx={{ ml: 2 }} onClick={() => router.push(`/records/${key}/edit`)}>
+        수정
+      </Button>
     </DashboardLayout>
   );
 }
