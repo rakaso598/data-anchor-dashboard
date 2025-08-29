@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import DashboardLayout from "../components/DashboardLayout";
 import useSWR from "swr";
