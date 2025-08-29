@@ -1,4 +1,4 @@
-# Data Anchor Dashboard
+# Data Anchor Dashboard - ✨[바로가기](https://data-anchor-dashboard.vercel.app)
 
 <details>
   <summary><h2>🖼️ 대시보드 미리보기 이미지</h2></summary>
