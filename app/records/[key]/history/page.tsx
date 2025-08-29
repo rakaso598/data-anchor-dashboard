@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { useParams } from 'next/navigation';
 import useSWR from 'swr';
-import { fetcher } from '../../lib/fetcher';
-import DashboardLayout from '../../components/DashboardLayout';
+import { fetcher } from '@lib/fetcher';
+import DashboardLayout from '@components/DashboardLayout';
 import { Typography, CircularProgress, Alert, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@mui/material';
 
 interface RecordHistoryItem {

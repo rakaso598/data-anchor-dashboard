@@ -5,10 +5,10 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
-import { fetcher } from '../../../lib/fetcher';
-import DashboardLayout from '../../../components/DashboardLayout';
+import { fetcher } from '@lib/fetcher';
+import DashboardLayout from '@components/DashboardLayout';
+import { useSnackbar } from '@components/SnackbarProvider';
 import { TextField, Button, Paper, Typography, Box, CircularProgress } from '@mui/material';
-import { useSnackbar } from '../../../components/SnackbarProvider';
 
 const schema = z.object({
   data: z.string().min(1, 'Data is required'), // JSON string

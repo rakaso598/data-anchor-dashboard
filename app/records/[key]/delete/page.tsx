@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import useSWRMutation from 'swr/mutation';
-import { fetcher } from '../../../lib/fetcher';
-import DashboardLayout from '../../../components/DashboardLayout';
+import { fetcher } from '@lib/fetcher';
+import DashboardLayout from '@components/DashboardLayout';
 import { Button, Paper, Typography, Box, Alert, CircularProgress, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
-import { useSnackbar } from '../../../components/SnackbarProvider';
+import { useSnackbar } from '@components/SnackbarProvider';
 
 async function deleteRecord(url: string) {
   const res = await fetcher(url, { method: 'DELETE' });

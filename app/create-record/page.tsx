@@ -2,11 +2,11 @@ import * as React from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { fetcher } from '../lib/fetcher';
+import { fetcher } from '@lib/fetcher';
 import useSWRMutation from 'swr/mutation';
-import DashboardLayout from '../components/DashboardLayout';
+import DashboardLayout from '@components/DashboardLayout';
 import { TextField, Button, Paper, Typography, Box, CircularProgress } from '@mui/material';
-import { useSnackbar } from '../components/SnackbarProvider';
+import { useSnackbar } from '@components/SnackbarProvider';
 
 const schema = z.object({
   key: z.string().min(1, 'Key is required'),
