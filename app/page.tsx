@@ -1,5 +1,5 @@
 import * as React from "react";
-import RootLayout from "../components/RootLayout";
+import DashboardLayout from "../components/DashboardLayout";
 import useSWR from "swr";
 import { fetcher } from "../lib/fetcher";
 import {
@@ -29,7 +29,7 @@ export default function HomePage() {
   const { data, error, isLoading } = useSWR<RecordItem[]>("/records", fetcher);
 
   return (
-    <RootLayout>
+    <DashboardLayout>
       <Typography variant="h4" gutterBottom>
         레코드 목록
       </Typography>
@@ -61,6 +61,6 @@ export default function HomePage() {
           </Table>
         </TableContainer>
       )}
-    </RootLayout>
+    </DashboardLayout>
   );
 }
